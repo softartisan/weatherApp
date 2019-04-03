@@ -1,6 +1,8 @@
 const path = require('path');
 const express = require('express');
 const hbs = require('hbs');
+const geocode = require('./utils/geocode');
+const forecast = require('./utils/forecast');
 
 const app = express();
 
@@ -48,10 +50,39 @@ app.get('/about',(req, res) =>{
 });
 
 app.get('/weather',(req, res) =>{
-    res.send({
-        forecast: 'Lluvioso',
-        location:'Santiago'
-    });
+    if(!req.query.address) return res.send({error:'Debes proveer una dirección'});
+
+    geocode(req.query.address,(geocodeError,{latitude, longitude, place} = {}) => {
+        if(geocodeError) return res.send({error: geocodeError});
+        forecast(latitude,longitude,(forecastError,{precipProbability, summary, temperature} = {}) =>{
+            if(forecastError) return res.send({forecastError});
+
+            return res.send({
+                temperature,
+                precipProbability,
+                summary,
+                address: req.query.address,
+                place
+            });      
+        }); 
+    });   
+});
+
+app.get('/products', (req,res) => {
+    if(!req.query.search){
+       return res.send({
+            error: 'you must provide a search term'
+        });
+    }else if(req.query.search && req.query.rating){
+        return res.send({
+            games: ['Runescape']
+        }); 
+    }else{
+        return res.send({
+            games: ['LOL','Fornite','Runescape']
+        }); 
+    }
+   
 });
 
 app.get('*', (req, res) => {
