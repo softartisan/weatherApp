@@ -12,7 +12,7 @@ weatherForm.addEventListener('submit',(e) =>{
     document.querySelector('#error').textContent = '';
     document.querySelector('#precipProbability').textContent = '';
     const searchValue = searchInput.value;
-    fetch(`http://localhost:3000/weather?address=${searchValue}`).then((response) =>{
+    fetch(`/weather?address=${searchValue}`).then((response) =>{
     return response.json();
     }).then((weather) => {
         if(weather.error){

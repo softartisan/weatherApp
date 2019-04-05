@@ -5,6 +5,7 @@ const geocode = require('./utils/geocode');
 const forecast = require('./utils/forecast');
 
 const app = express();
+const port = process.env.PORT || 3000;
 
 //Defino path para la config de Express
 const publicDirectoryPath = path.join(__dirname,'../public');
@@ -12,7 +13,7 @@ const viewsPath = path.join(__dirname,'../templates/views');
 const partialsPath = path.join(__dirname, '../templates/partials');
 
 //Configuro el view engine a hbs y agrego el path a las view
-app.set('view engine','hbs');
+app.set('view engine','hbs'); 
 app.set('views',viewsPath);
 hbs.registerPartials(partialsPath);
 //Configuro el directorio para acceder a paginas estaticas
@@ -22,30 +23,30 @@ app.use(express.static(publicDirectoryPath));
 
 app.get('', (req, res) => {
     res.render('index',{
-        title: 'Weather',
-        name: 'Sebastian'
+        title: 'Clima',
+        name: 'Sebastian Canio'
     });
 });
 
 app.get('/help',(req, res) =>{
     res.render('help',{
-        title: 'Help',
-        name: 'Sebastian'
+        title: 'Ayuda',
+        name: 'Sebastian Canio'
     });
 });
 
 app.get('/help/*',(req,res) => {
     res.render('errorPage',{
-        error: 'Help article not found',
+        error: 'Articulo de "Ayuda" no encontrado.',
         title: 'Error 404',
-        name: 'Sebastian'
+        name: 'Sebastian Canio'
     });
 });
 
 app.get('/about',(req, res) =>{
     res.render('about',{
-        title: 'About',
-        name: 'Sebastian'
+        title: 'Acerca de',
+        name: 'Sebastian Canio'
     });
 });
 
@@ -93,6 +94,6 @@ app.get('*', (req, res) => {
     });
 });
 
-app.listen(3000,() =>{
+app.listen(port,() =>{
     console.log('Server is up on port 3000');
 });
