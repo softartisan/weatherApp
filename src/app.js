@@ -55,11 +55,13 @@ app.get('/weather',(req, res) =>{
 
     geocode(req.query.address,(geocodeError,{latitude, longitude, place} = {}) => {
         if(geocodeError) return res.send({error: geocodeError});
-        forecast(latitude,longitude,(forecastError,{precipProbability, summary, temperature} = {}) =>{
+        forecast(latitude,longitude,(forecastError,{precipProbability, summary, actualTemperature, maxTemperature, minTemperature} = {}) =>{
             if(forecastError) return res.send({forecastError});
 
             return res.send({
-                temperature,
+                actualTemperature,
+                minTemperature,
+                maxTemperature,
                 precipProbability,
                 summary,
                 address: req.query.address,

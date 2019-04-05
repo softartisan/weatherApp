@@ -11,11 +11,13 @@ const forecast = (latitude,longitude,callback) => {
            callback('No se pudo encontrar esa dirección',undefined);
         }else{
             const currently = body.currently;
-            const summary = body.daily.data[0].summary;
+            const dailyData = body.daily.data[0];
             callback(undefined,{
-                summary,
-                temperature: currently.temperature,
-                precipProbability: currently.precipProbability
+                summary: dailyData.summary,
+                actualTemperature: currently.temperature,
+                precipProbability: currently.precipProbability,
+                maxTemperature: dailyData.temperatureHigh,
+                minTemperature: dailyData.temperatureLow
             });
         }
     });
